@@ -101,37 +101,31 @@ COMPONENT MooreElevatorController_Shell
 		clk : IN std_logic;
 		reset : IN std_logic;
 		stop : IN std_logic;
-		up_down : IN std_logic;          
-		floor : OUT std_logic_vector(3 downto 0)
+		desiredFloor : IN std_logic_vector(3 downto 0);
+		desiredFloorOUT : OUT std_logic_vector(3 downto 0);
+		up_down : OUT std_logic_vector(1 downto 0);          
+		floorA : OUT std_logic_vector(3 downto 0);
+		floorB : OUT std_logic_vector(3 downto 0)
 		);
 	END COMPONENT;
--------------------------------------------------------------------------------------
---Mealy Elevator Controller
---Input: System Clock, reset, stop, up/down
---Output: floor, next floor
--------------------------------------------------------------------------------------
-COMPONENT MealyElevatorController_Shell
-	PORT(
-		clk : IN std_logic;
-		reset : IN std_logic;
-		stop : IN std_logic;
-		up_down : IN std_logic;          
-		floor : OUT std_logic_vector(3 downto 0);
-		nextfloor : OUT std_logic_vector(3 downto 0)
-		);
-	END COMPONENT;
+
 --------------------------------------------------------------------------------------
 --Insert any required signal declarations below
 --------------------------------------------------------------------------------------
+--signal digit2:std_logic_vector(3 downto 0);
+signal upDown:std_logic_vector(1 downto 0);
 
 
-
-begin
-
-----------------------------
---code below tests the LEDs:
-----------------------------
-LED <= CLOCKBUS_SIG(26 DOWNTO 19);
+begin 
+		LED(0) <= CLOCKBUS_SIG(26) when upDown = "01" else CLOCKBUS_SIG(23) when upDown="00" else '0';
+		LED(1) <= CLOCKBUS_SIG(25) when upDown = "01" else CLOCKBUS_SIG(24) when upDown="00" else '0';
+		LED(2) <= CLOCKBUS_SIG(24) when upDown = "01" else CLOCKBUS_SIG(25) when upDown="00" else '0';
+		LED(3) <= CLOCKBUS_SIG(23) when upDown = "01" else CLOCKBUS_SIG(26) when upDown="00" else '0';
+		LED(4) <= CLOCKBUS_SIG(26) when upDown = "01" else CLOCKBUS_SIG(23) when upDown="00" else '0';
+		LED(5) <= CLOCKBUS_SIG(25) when upDown = "01" else CLOCKBUS_SIG(24) when upDown="00" else '0';
+		LED(6) <= CLOCKBUS_SIG(24) when upDown = "01" else CLOCKBUS_SIG(25) when upDown="00" else '0';
+		LED(7) <= CLOCKBUS_SIG(23) when upDown = "01" else CLOCKBUS_SIG(26) when upDown="00" else '0';
+		
 
 --------------------------------------------------------------------------------------------	
 --This code instantiates the Clock Divider. Reference the Clock Divider Module for more info
@@ -152,7 +146,7 @@ LED <= CLOCKBUS_SIG(26 DOWNTO 19);
 --------------------------------------------------------------------------------------
 
 --nibble0 <= 
-nibble1 <= "0000";
+--nibble1 <= "0000";
 nibble2 <= "0000";
 --nibble3 <= "0000";
 
@@ -197,21 +191,25 @@ nibble2 <= "0000";
 -----------------------------------------------------------------------------
 --Instantiate the design you wish to implement below and start wiring it up!:
 -----------------------------------------------------------------------------
--- Moore1: MooreElevatorController_Shell PORT MAP(
---		clk => ClockBus_sig(25),
---		reset => btn(3),
---		stop => btn(0),
---		up_down => switch(0),
---		floor => nibble0
---	);
-	Mealy1: MealyElevatorController_Shell PORT MAP(
+ Moore1: MooreElevatorController_Shell PORT MAP(
 		clk => ClockBus_sig(25),
 		reset => btn(3),
-		stop => btn(1),
-		up_down => switch(0),
-		floor => nibble0,
-		nextfloor => nibble3
+		stop => btn(0),
+		desiredFloor => switch(3 downto 0),
+		desiredFloorOUT => nibble3,
+		up_down => upDown,
+		floorA => nibble0,
+		floorB => nibble1
 	);
+
+--	Mealy1: MealyElevatorController_Shell PORT MAP(
+--		clk => ClockBus_sig(25),
+--		reset => btn(3),
+--		stop => btn(1),
+--		up_down => switch(0),
+--		floor => nibble0,
+--		nextfloor => nibble3
+--	);
 
 end Behavioral;
 
