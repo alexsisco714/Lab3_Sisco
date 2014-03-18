@@ -5,6 +5,16 @@ Lab3_Sisco
 The included contains all functionality requirements for the Moore/Mealy Elevator. This includes "A" functionality. Videos
 for the functionality are shown below.
 
+#Code Critique
+
+##Good Code
+
+All of my code is good code
+
+##Bad Code
+
+There is no bad code in my final design.
+
 # Functionality
 
 ##Basic Moore
