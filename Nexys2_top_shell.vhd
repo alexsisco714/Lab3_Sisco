@@ -103,6 +103,8 @@ COMPONENT MooreElevatorController_Shell
 		stop : IN std_logic;
 		desiredFloor : IN std_logic_vector(3 downto 0);
 		desiredFloorOUT : OUT std_logic_vector(3 downto 0);
+		requestedFloor : IN std_logic_vector(3 downto 0);
+		requestedFloorOUT : OUT std_logic_vector(3 downto 0);
 		up_down : OUT std_logic_vector(1 downto 0);          
 		floorA : OUT std_logic_vector(3 downto 0);
 		floorB : OUT std_logic_vector(3 downto 0)
@@ -147,7 +149,7 @@ begin
 
 --nibble0 <= 
 --nibble1 <= "0000";
-nibble2 <= "0000";
+--nibble2 <= "0000";
 --nibble3 <= "0000";
 
 --This code converts a nibble to a value that can be displayed on 7-segment display #0
@@ -195,8 +197,10 @@ nibble2 <= "0000";
 		clk => ClockBus_sig(25),
 		reset => btn(3),
 		stop => btn(0),
-		desiredFloor => switch(3 downto 0),
-		desiredFloorOUT => nibble3,
+		desiredFloor => switch(7 downto 4),
+		desiredFloorOUT => nibble2,
+		requestedFloor => switch(3 downto 0),
+		requestedFloorOUT => nibble3,
 		up_down => upDown,
 		floorA => nibble0,
 		floorB => nibble1
